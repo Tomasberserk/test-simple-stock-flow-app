@@ -106,7 +106,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         </form>
 
         <div className="mt-8 pt-6 border-t border-slate-100 text-center text-xs text-slate-400">
-          Arquitectura Onion · SENA ADSO 3413974
+          Simple Stock Flow · Sistema de Gestión de Almacén
         </div>
       </div>
     </div>

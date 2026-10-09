@@ -36,7 +36,7 @@ export const SalesReportView: React.FC = () => {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Reporte Consolidado de Ventas</h1>
         <p className="text-sm text-slate-500 mt-1">
-          Agregación en motor SQL con valores congelados e inmutables (HU-06 · DP-01 · DP-02)
+          Resumen de ingresos y unidades vendidas por producto y categoría
         </p>
       </div>
 

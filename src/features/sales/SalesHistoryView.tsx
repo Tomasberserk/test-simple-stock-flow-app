@@ -47,7 +47,7 @@ export const SalesHistoryView: React.FC = () => {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Historial de Ventas</h1>
         <p className="text-sm text-slate-500 mt-1">
-          {totalSales} venta{totalSales === 1 ? '' : 's'} registrada{totalSales === 1 ? '' : 's'} (Inmutables según RN-07)
+          {totalSales} venta{totalSales === 1 ? '' : 's'} registrada{totalSales === 1 ? '' : 's'} en el sistema
         </p>
       </div>
 
