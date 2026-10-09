@@ -1,45 +1,61 @@
-# test-simple-stock-flow-app
+# Simple Stock Flow — Frontend (React + TypeScript + Vite + Tailwind CSS)
 
-> **Prueba técnica · Ficha ADSO 3413974**
-> Horario: de **9:00 a. m. a 3:00 p. m.** (15:00)
+Interfaz web del sistema **Simple Stock Flow** implementada en React 18, TypeScript, Vite y Tailwind CSS, siguiendo rigurosamente una **Arquitectura Onion (Cebolla)** de 4 capas concéntricas idéntica al backend.
 
-Este repositorio es el **frontend** de *Simple Stock Flow*, en **React**. **Empieza vacío a propósito**: se construye en el fork de cada aprendiz.
+---
 
-## Instrucciones
+## 🏛️ Estructura Arquitectónica
 
-Cada aprendiz debe **crear el fork** de los seis repositorios del proyecto y **resolver el proyecto
-con el spec planteado**.
+```text
+src/
+├── domain/                                          # ANILLO 1: Modelos e invariantes en TypeScript puro (Sin React)
+│   └── model/                                       # Product, Cart, Sale, SaleItem, Money, User, Report
+│
+├── application/                                     # ANILLO 2: Casos de uso y Puertos
+│   ├── ports/                                       # ProductRepository, CartRepository, SessionRepository, SaleRepository, ReportRepository
+│   └── use-cases/                                   # BrowseCatalog, AddToCart, Checkout, Login, ViewSalesReport, ManageCatalog
+│
+├── infrastructure/                                  # ANILLO 3: Adaptadores HTTP, Persistencia local y Mappers
+│   ├── http/                                        # HttpClient resiliente con interceptor JWT y RFC 7807 ProblemDetails
+│   ├── mappers/                                     # ProductMapper, SaleMapper, ReportMapper (DTO -> Dominio)
+│   ├── repositories/                                # HttpProductRepository, LocalCartRepository, HttpSessionRepository, etc.
+│   └── providers.ts                                 # Composition root del Frontend
+│
+└── features/                                        # ANILLO 4: Presentación e Interfaz de Usuario (React)
+    ├── auth/                                        # Formulario de inicio de sesión con validación
+    ├── catalog/                                     # Catálogo con búsqueda, filtros, control de existencias y modales de admin
+    ├── cart/                                        # Carrito de compras desplegable con validación local de stock y checkout atómico
+    ├── sales/                                       # Historial de ventas inmutables (RN-07) con desglose de ítems congelados
+    ├── reports/                                     # Reporte consolidado de ventas con KPIs e ingresos por producto
+    └── layout/                                      # Barra de navegación con roles ('admin' / 'seller') y contador dinámico de carrito
+```
 
-1. Hacer fork, a su cuenta de GitHub, de cada repositorio de la tabla del final.
-2. Leer el spec en [`test-simple-stock-flow-docs`](https://github.com/code-sena/test-simple-stock-flow-docs).
-   Se entrega en dos versiones: `spec-python/` y `spec-.net/`.
-3. Desarrollar en los forks.
+---
 
-## El reto se desarrolla con React y PHP (Laravel)
+## 🚀 Instalación y Ejecución
 
-El spec está escrito para Python y para .NET, pero el reto **no** se hace en esos lenguajes:
+```bash
+# Instalar dependencias
+npm install
 
-| Capa | Tecnología del reto |
-|---|---|
-| Frontend | React |
-| Backend | PHP con Laravel |
+# Iniciar servidor de desarrollo (con proxy a :8000 para /api y /media)
+npm run dev
 
-Lo que el spec define sobre el negocio —historias, criterios de aceptación, reglas, contrato de la
-API, modelo de datos— se respeta. Lo que define sobre la tecnología se traduce a React y Laravel.
+# Compilar para producción (TypeScript + Vite)
+npm run build
 
-## La prueba no consiste en escribir el código
+# Ejecutar pruebas unitarias de Dominio y Casos de Uso
+npm test
+```
 
-El propósito principal es ver la **capacidad de desempeño con SDD** (*Spec-Driven Development*,
-desarrollo guiado por especificación): cómo se lee, se interpreta y se aplica una especificación
-para llevarla a un stack distinto. El código es el medio, no el fin.
+---
 
-## Los seis repositorios
+## 🧪 Pruebas Automatizadas
 
-| Repositorio | Qué va ahí |
-|---|---|
-| [`test-simple-stock-flow-docs`](https://github.com/code-sena/test-simple-stock-flow-docs) | El spec: `spec-python/` y `spec-.net/` |
-| [`test-simple-stock-flow-api`](https://github.com/code-sena/test-simple-stock-flow-api) | Backend en PHP (Laravel) |
-| [`test-simple-stock-flow-app`](https://github.com/code-sena/test-simple-stock-flow-app) | Frontend en React |
-| [`test-simple-stock-flow-page`](https://github.com/code-sena/test-simple-stock-flow-page) | Sitio público estático de presentación |
-| [`test-simple-stock-flow-infra`](https://github.com/code-sena/test-simple-stock-flow-infra) | Contenedores, red, volúmenes y motor de base de datos vacío |
-| [`test-simple-stock-flow-tool`](https://github.com/code-sena/test-simple-stock-flow-tool) | Utilidades: sembrador de datos de demostración |
+El núcleo de negocio del frontend (`Cart`, `Money`, `Product`, `AddToCartUseCase`, `CheckoutUseCase`) se valida de manera autónoma con pruebas unitarias ejecutadas directamente sobre Node.js:
+
+```bash
+npm test
+```
+
+Estas pruebas verifican la pureza arquitectónica demostrando que las reglas de negocio del cliente se ejecutan **sin navegador, sin red y sin servidor** mediante dobles de prueba en memoria.
